@@ -87,7 +87,11 @@ class TaskController extends Controller
 
         $task->update($validated);
 
-        return response()->json($task);
+        return response()->json([
+            'message' => 'Tarea actualizada correctamente',
+            'message' => $task,
+            'status' => 200,
+        ],200);
     }
 
     /**

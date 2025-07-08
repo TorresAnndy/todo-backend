@@ -31,7 +31,18 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string',
+            'email' => 'required|email|users,email',
+            'password' => 'required|string|min:6',
+        ]);
+
+        $user = User::create($validated);
+
+        return response()->json([
+            'data' => $user,
+            'status' => 201,
+        ],201);
     }
 
     /**
@@ -39,7 +50,18 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $user = User::find($id);
+
+        if (!$user) {
+            return response()->json([
+                'message' => 'Usuario no encontrada'
+            ], 404);
+        }
+
+        return response()->json([
+            'data' => $user,
+            'status' => 201,
+        ],201);
     }
 
     /**
@@ -47,7 +69,28 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $user = User::find($id);
+
+        if (!$user) {
+            return response()->json([
+                'message' => 'Usuario no encontrada',
+                'status' => 404,
+            ], 404);
+        }
+
+        $validated = $request->validate([
+            'name' => 'sometime|string',
+            'email' => 'sometime|email|users,email'. $id,
+            'password' => 'sometime|string|min:6',
+        ]);
+
+        $user->update($validated);
+
+        return response()->json([
+            'message' => 'usuario actualizado correctamente',
+            'message' => $user,
+            'status' => 200,
+        ],200);
     }
 
     /**
@@ -55,6 +98,20 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $user = User::find($id);
+
+        if (!$user) {
+            return response()->json([
+                'message' => 'Usuario no encontrada',
+                'status' => 404,
+            ], 404);
+        }
+
+        $user->delete();
+
+        return response()->json([
+            'message' => 'Usuario eliminada correctamente',
+            'status' => 200,
+        ],200);
     }
 }
