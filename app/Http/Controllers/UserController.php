@@ -33,9 +33,11 @@ class UserController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string',
-            'email' => 'required|email|users,email',
+            'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:6',
         ]);
+
+        $validated['password'] = bcrypt($validated['password']);
 
         $user = User::create($validated);
 
@@ -79,16 +81,20 @@ class UserController extends Controller
         }
 
         $validated = $request->validate([
-            'name' => 'sometime|string',
-            'email' => 'sometime|email|users,email'. $id,
-            'password' => 'sometime|string|min:6',
+            'name' => 'sometimes|string',
+            'email' => 'sometimes|email|unique:users,email,'.$id,
+            'password' => 'sometimes|string|min:6',
         ]);
+
+        if (isset($validated['password'])) {
+            $validated['password'] = bcrypt($validated['password']);
+        }
 
         $user->update($validated);
 
         return response()->json([
             'message' => 'usuario actualizado correctamente',
-            'message' => $user,
+            'data' => $user,
             'status' => 200,
         ],200);
     }
