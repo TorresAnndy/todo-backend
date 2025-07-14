@@ -11,4 +11,9 @@ class Task extends Model
 
     protected $connection = 'mongodb';
     protected $collection = 'tasks';
+    protected $fillable = [
+        'title', 
+        'description', 
+        'status'
+    ];
 }
