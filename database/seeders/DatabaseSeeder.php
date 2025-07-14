@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\Rol;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -12,7 +14,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $this->call(TaskSeeder::class);
+        $this->call(RolSeeder::class);
         $this->call(UserSeeder::class);
+        $this->call(TaskSeeder::class);
+        
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use MongoDB\Laravel\Eloquent\Model;
 
 class Task extends Model
@@ -14,6 +15,13 @@ class Task extends Model
     protected $fillable = [
         'title', 
         'description', 
-        'status'
+        'status',
+        'user_id'
     ];
+
+    //relacin hijo
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id', '_id');
+    }
 }

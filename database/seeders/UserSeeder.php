@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Rol;
 use Illuminate\Database\Seeder;
 
 class UserSeeder extends Seeder
@@ -13,28 +13,54 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        User::create([
-            "name" => "Andy",
-            "email" => "Andy@gmail.com",
-            "password" => bcrypt("admin"),
-        ]);
+        $adminRol = Rol::where('name', 'Admin')->first();
+        $usuarioRol = Rol::where('name', 'Usuario')->first();
 
-        User::create([
-            "name" => "Andres",
-            "email" => "Andres@gmail.com",
-            "password" => bcrypt("admin"),
-        ]);
+        if (!$adminRol || !$usuarioRol) {
+            $this->command->error('Faltan roles. Ejecuta primero el RolSeeder.');
+            return;
+        }
 
-        User::create([
-            "name" => "Carlitos",
-            "email" => "Carlitos@gmail.com",
-            "password" => bcrypt("admin"),
-        ]);
+        $usuarios = [
+            [
+                "name" => "Andy",
+                "email" => "Andy@gmail.com",
+                "rol_id" => $adminRol->_id,
+            ],
+            [
+                "name" => "Andres",
+                "email" => "Andres@gmail.com",
+                "rol_id" => $adminRol->_id,
+            ],
+            [
+                "name" => "Carlitos",
+                "email" => "Carlitos@gmail.com",
+                "rol_id" => $adminRol->_id,
+            ],
+            [
+                "name" => "Roddy",
+                "email" => "Roddy@gmail.com",
+                "rol_id" => $adminRol->_id,
+            ],
+            [
+                "name" => "Usuario1",
+                "email" => "usuario1@gmail.com",
+                "rol_id" => $usuarioRol->_id,
+            ],
+            [
+                "name" => "Usuario2",
+                "email" => "usuario2@gmail.com",
+                "rol_id" => $usuarioRol->_id,
+            ]
+        ];
 
-        User::create([
-            "name" => "Roddy",
-            "email" => "Roddy@gmail.com",
-            "password" => bcrypt("admin"),
-        ]);
+        foreach ($usuarios as $data) {
+            User::create([
+                'name' => $data['name'],
+                'email' => $data['email'],
+                'password' => bcrypt('admin'),
+                'rol_id' => $data['rol_id'],
+            ]);
+        }
     }
 }
