@@ -13,7 +13,8 @@ class Rol extends Model
     protected $connection = 'mongodb';
     protected $collection = 'rols';
     protected $fillable = [
-        'name'
+        'name',
+        'description'
     ];
 
     //relacion padre

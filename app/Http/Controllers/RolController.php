@@ -32,7 +32,8 @@ class RolController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|string'
+            'name' => 'required|string',
+            'description' => 'nullable|string',
         ]);
 
         $rol = Rol::create($validated);
@@ -77,14 +78,15 @@ class RolController extends Controller
         }
 
         $validated = $request->validate([
-            'name' => 'sometime|string'
+            'name' => 'sometimes|string',
+            'description' => 'sometimes|string',
         ]);
 
         $rol->update($validated);
 
         return response()->json([
             'message' => 'Rol actualizada correctamente',
-            'message' => $rol,
+            'data' => $rol,
             'status' => 200,
         ],200);
     }

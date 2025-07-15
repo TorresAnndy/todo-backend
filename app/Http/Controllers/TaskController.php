@@ -35,7 +35,8 @@ class TaskController extends Controller
         $validated = $request->validate([
             'title' => 'required|string',
             'description' => 'nullable|string',
-            'status' => 'required|string|in:pendiente,progreso,terminada',
+            'status' => 'required|string|in:pending,in_progress,completed',
+            'user_id' => 'nullable|string',
         ]);
 
         $task = Task::create($validated);
@@ -80,16 +81,17 @@ class TaskController extends Controller
         }
 
         $validated = $request->validate([
-            'title' => 'sometime|string',
-            'description' => 'sometime|string',
-            'status' => 'sometime|string|in:pendiente,progreso,terminada',
+            'title' => 'sometimes|string',
+            'description' => 'sometimes|string',
+            'status' => 'sometimes|string|in:pending,in_progress,completed',
+            'user_id' => 'sometimes|string',
         ]);
 
         $task->update($validated);
 
         return response()->json([
             'message' => 'Tarea actualizada correctamente',
-            'message' => $task,
+            'data' => $task,
             'status' => 200,
         ],200);
     }
