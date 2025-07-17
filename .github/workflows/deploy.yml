@@ -30,6 +30,9 @@ jobs:
       - name: Install Composer dependencies
         run: composer install --no-dev --optimize-autoloader
 
+      - name: Copy .env.example to .env
+        run: cp .env.example .env
+
       - name: Generate app key
         run: php artisan key:generate --force
 
