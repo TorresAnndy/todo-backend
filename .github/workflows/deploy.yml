@@ -17,17 +17,27 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: 8.2
+          extensions: mbstring, bcmath, openssl, pdo, tokenizer, xml, curl
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v2
+        with:
+          path: vendor
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
 
       - name: Install Composer dependencies
         run: composer install --no-dev --optimize-autoloader
 
-      - name: Copy .env variables
-        run: |
-          cp .env.example .env
-          php artisan config:clear
-
       - name: Generate app key
-        run: php artisan key:generate
+        run: php artisan key:generate --force
+
+      - name: Clear and cache config
+        run: |
+          php artisan config:cache
+          php artisan route:cache
+          php artisan view:cache
 
       - name: Deploy to Azure
         uses: azure/webapps-deploy@v2
