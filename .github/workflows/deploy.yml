@@ -42,6 +42,11 @@ jobs:
           php artisan route:cache
           php artisan view:cache
 
+      - name: Move public contents to root for Azure
+        run: |
+          cp -r public/* .
+          rm -rf public
+
       - name: Azure Login
         uses: azure/login@v1
         with:
