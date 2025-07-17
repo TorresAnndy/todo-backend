@@ -32,14 +32,18 @@ return [
     'connections' => [
         'mongodb' => [
             'driver'   => 'mongodb',
-            'dsn'      => env('DB_URL', 'mongodb://127.0.0.1:27017'),
+            'dsn'      => env('DB_URL', 'mongodb+srv://andygonzales2003:sOseL3kkfkIUXbkG@bd2.15rbiiv.mongodb.net/todo_backend?retryWrites=true&w=majority'),
             'database' => env('DB_DATABASE', 'todo_backend'),
-            'username' => env('DB_USERNAME', ''),
-            'password' => env('DB_PASSWORD', ''),
+            'username' => env('DB_USERNAME', 'andygonzales2003'),
+            'password' => env('DB_PASSWORD', 'sOseL3kkfkIUXbkG'),
             'options'  => [
-                'authSource' => 'admin' 
+                'authSource' => 'admin',
+                'tls' => true,                  // habilitar TLS/SSL (requerido en Atlas)
+                'retryWrites' => true,
+                'w' => 'majority',
             ],
         ],
+
 
 
         'sqlite' => [
