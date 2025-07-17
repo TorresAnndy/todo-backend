@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('5ti')->group(function () {
     Route::post('/login', [LoginController::class, 'login']);
     Route::post('/register', [UserController::class, 'store']);
+    Route::resource('users', UserController::class);
 });
 
 //Rutas privadas 
@@ -20,4 +21,9 @@ Route::prefix('/5ti')->middleware('auth:api')->group(function () {
     Route::resource('rols', RolController::class);
 
     Route::post('/logout', [LoginController::class, 'logout']);
+    
+    // Endpoint para obtener el usuario autenticado
+    Route::get('/me', function () {
+        return response()->json(auth()->user()->load('rol'));
+    });
 });

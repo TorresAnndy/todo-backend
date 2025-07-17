@@ -39,10 +39,18 @@ class UserController extends Controller
 
         $validated['password'] = bcrypt($validated['password']);
 
+        // Asignar rol por defecto si no se especifica
+        if (!isset($validated['rol_id'])) {
+            $rol = \App\Models\Rol::where('name', 'Usuario')->first(); // Cambiado a 'Usuario' con mayúscula
+            if ($rol) {
+                $validated['rol_id'] = $rol->_id;
+            }
+        }
+
         $user = User::create($validated);
 
         return response()->json([
-            'data' => $user,
+            'data' => $user->load('rol'),
             'status' => 201,
         ], 201);
     }
